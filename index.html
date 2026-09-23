@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="LeaseLens" />
+  <title>LeaseLens — score the listing before you wire</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icons/icon.svg" />
+  <link rel="stylesheet" href="./css/app.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="top">
+      <div class="brand"><div class="logo">L</div> LeaseLens</div>
+      <div class="scans-left" id="scansLeft">3 free scans left</div>
+    </div>
+    <section id="screen-home" class="screen on">
+      <h1>Don't wire the deposit yet.</h1>
+      <p class="lede">Paste a listing or drop a screenshot. Get a scam score, a price sanity check, and the message that keeps your money.</p>
+      <div class="tabs">
+        <button class="tab on" id="tab-paste" type="button">Paste listing</button>
+        <button class="tab" id="tab-shot" type="button">Screenshot</button>
+      </div>
+      <div id="pane-paste">
+        <textarea id="listing" placeholder="Paste Craigslist, Facebook, Zillow, or the text from a DM…"></textarea>
+      </div>
+      <div id="pane-shot" style="display:none">
+        <label class="drop">
+          <strong>Drop a screenshot</strong>
+          We'll pull the text off the image.
+          <input id="shotInput" type="file" accept="image/*" />
+          <img id="shotPreview" class="preview" alt="" style="display:none" />
+        </label>
+        <div class="ocr-status" id="ocrStatus"></div>
+      </div>
+      <button class="btn btn-primary" id="goScan" type="button">Score this listing</button>
+      <div class="samples">
+        <button class="sample" data-sample="scam" type="button">Try a scam listing <small>Mission studio $1,150 · Zelle first</small></button>
+        <button class="sample" data-sample="caution" type="button">Try a caution listing <small>Sunset 1BR · no manager · vague address</small></button>
+        <button class="sample" data-sample="legit" type="button">Try a cleaner listing <small>Named broker · open house · written lease</small></button>
+      </div>
+    </section>
+    <section id="screen-report" class="screen">
+      <div class="score-hero" id="scoreHero">
+        <div class="score-num bad" id="scoreNum">18</div>
+        <div class="verdict" id="verdict">Likely scam.</div>
+        <div class="meta" id="reportMeta"></div>
+      </div>
+      <div class="card"><h3>Market check</h3><p id="marketNote"></p></div>
+      <div class="card"><h3>Flags</h3><div id="flags"></div></div>
+      <div class="card">
+        <h3>Send this</h3>
+        <div class="reply" id="reply"></div>
+        <button class="btn btn-primary" id="copyReply" type="button">Copy reply</button>
+      </div>
+      <button class="btn btn-ghost" id="shareReport" type="button">Share score</button>
+      <button class="btn btn-ghost" id="newScan" type="button">Score another</button>
+    </section>
+    <section id="screen-history" class="screen">
+      <h1>History</h1>
+      <p class="lede">Last 20 scans on this phone. Nothing leaves the device.</p>
+      <div class="card" id="historyList"></div>
+    </section>
+    <section id="screen-settings" class="screen settings">
+      <h1>Settings</h1>
+      <p class="lede">Hunt pass is $8 / 7 days. Paste your Stripe Payment Link so the Buy button takes real money.</p>
+      <label>Stripe Payment Link</label>
+      <input id="payUrl" type="text" placeholder="https://buy.stripe.com/…" style="min-height:44px" />
+      <button class="btn btn-primary" id="saveSettings" type="button">Save link</button>
+      <button class="btn btn-ghost" id="devUnlock" type="button">Unlock 7-day pass on this device</button>
+      <button class="btn btn-ghost" id="resetApp" type="button">Reset scans</button>
+      <p class="fine">Decision aid, not legal advice. Always tour in person. Never send a deposit to a stranger.</p>
+      <p class="fine"><a href="./privacy.html" style="color:#e8ff47">Privacy policy</a> · v1.0.0</p>
+    </section>
+    <nav class="nav">
+      <button type="button" class="on" data-go="home">Scan</button>
+      <button type="button" data-go="report">Report</button>
+      <button type="button" data-go="history">History</button>
+      <button type="button" data-go="settings">Settings</button>
+    </nav>
+  </div>
+  <div class="paywall" id="paywall" style="display:none">
+    <div class="sheet">
+      <h2>3 free scans used.</h2>
+      <p class="lede">$8 unlocks unlimited scores for 7 days.</p>
+      <button class="btn btn-primary" id="buyPass" type="button">Pay $8</button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="./js/analyze.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
